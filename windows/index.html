@@ -277,8 +277,15 @@ h1{font-size:clamp(1.12rem,4.6vw,1.45rem)}
   }else{
     document.getElementById('other').classList.remove('hide');
     document.getElementById('linkTxt').textContent=location.host+location.pathname;
+    // conta quem chegou fora do Windows (celular, tablet, Mac…), separado por cid
+    (function evento(t){
+      if(window.goatcounter&&window.goatcounter.count){
+        try{ window.goatcounter.count({path:'outro-aparelho-'+cid, title:'Abriu fora do Windows (celular/tablet/Mac)', event:true}); }catch(e){}
+      }else if(t<40){ setTimeout(function(){ evento(t+1); },250); } // o count.js carrega assíncrono
+    })(0);
   }
   var p=document.getElementById('playBtn');
+  p.setAttribute('data-goatcounter-click','clique-google-play-'+cid); // clique na Play separado por cid
   p.href+='&referrer='+encodeURIComponent('utm_source='+cid+'&utm_medium=windows_page');
 })();
 </script>
