@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Show do Galardão para Windows</title>
+<meta name="description" content="Show do Galardão, o quiz bíblico, na Microsoft Store.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0b1446">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy-0:#070d33; --navy-1:#0b1446; --navy-2:#0e1e5b; --purple:#3b1f6e; --deep:#1a0a3a;
+  --gold:#f5c542; --gold-2:#d9a020; --gold-soft:#ffe08a; --ink:#ffffff; --muted:#c9cdf0;
+  --pink:#ff3fb4; --sun-1:#ffe066; --sun-2:#ff9a3c; --sun-3:#ff4f8b;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; color:var(--ink); background:var(--navy-1);
+  font:16px/1.5 "Roboto",system-ui,-apple-system,"Segoe UI",sans-serif;
+  overflow-x:hidden;
+}
+
+/* ===== Cenário ===== */
+.sky{
+  position:fixed; inset:0; z-index:0; overflow:hidden;
+  background:linear-gradient(180deg,var(--navy-0) 0%,var(--navy-1) 35%,#151e66 58%,var(--purple) 76%,var(--deep) 100%);
+}
+.stars{position:absolute; inset:0 0 35% 0}
+.star{position:absolute; background:#fff; border-radius:50%; opacity:.85; animation:twinkle 3s ease-in-out infinite}
+.spark{position:absolute; color:#e9e3c9; opacity:.75; font-size:18px; animation:twinkle 4s ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:.25}50%{opacity:1}}
+
+.sun{
+  position:absolute; left:50%; bottom:22vh; transform:translateX(-50%);
+  width:min(62vw,420px); aspect-ratio:2/1; border-radius:999px 999px 0 0;
+  background:linear-gradient(180deg,var(--sun-1) 0%,var(--sun-2) 45%,var(--sun-3) 100%);
+  -webkit-mask-image:linear-gradient(180deg,#000 0 46%,transparent 46%),repeating-linear-gradient(180deg,#000 0 7%,transparent 7% 10%);
+          mask-image:linear-gradient(180deg,#000 0 46%,transparent 46%),repeating-linear-gradient(180deg,#000 0 7%,transparent 7% 10%);
+  filter:drop-shadow(0 0 30px rgba(255,90,140,.35));
+}
+.grid{
+  position:absolute; left:-50%; right:-50%; bottom:0; height:22vh;
+  background:
+    repeating-linear-gradient(90deg,transparent 0 58px,var(--pink) 58px 60px),
+    repeating-linear-gradient(0deg,transparent 0 26px,var(--pink) 26px 28px),
+    var(--deep);
+  transform:perspective(220px) rotateX(58deg); transform-origin:50% 0;
+  box-shadow:0 -2px 14px rgba(255,63,180,.6);
+  opacity:.9;
+}
+.grid::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,var(--deep) 0%,transparent 40%)}
+
+/* ===== Conteúdo ===== */
+main{
+  position:relative; z-index:1; min-height:100%;
+  display:flex; flex-direction:column; align-items:center; justify-content:flex-start;
+  padding:max(28px,env(safe-area-inset-top)) 16px 30vh; text-align:center;
+}
+.title{width:min(88vw,520px); height:auto; display:block; margin:8px auto 0; filter:drop-shadow(0 6px 18px rgba(245,197,66,.25))}
+.host{
+  width:132px; height:132px; border-radius:50%; margin:14px auto 6px;
+  background:var(--navy-2) url(apresentador.png) center 12px/96% auto no-repeat;
+  border:4px solid var(--gold); box-shadow:0 0 0 6px rgba(245,197,66,.15),0 10px 30px rgba(0,0,0,.4);
+}
+.panel{
+  width:min(100%,440px); margin-top:10px; padding:22px 20px 20px;
+  background:linear-gradient(180deg,rgba(14,30,91,.92),rgba(7,13,51,.95));
+  border:3px solid var(--gold); border-radius:22px;
+  box-shadow:0 14px 40px rgba(0,0,0,.45);
+}
+h1{margin:0 0 4px; font-weight:900; font-size:1.35rem; color:var(--gold); letter-spacing:.3px}
+.lead{margin:0 0 14px; color:var(--muted)}
+
+/* barra de progresso dourada */
+.bar{height:14px; border-radius:999px; background:rgba(255,255,255,.08); border:2px solid rgba(245,197,66,.5); overflow:hidden; margin:6px 4px 16px}
+.bar i{display:block; height:100%; width:0; border-radius:999px; background:linear-gradient(90deg,var(--gold-2),var(--gold),var(--gold-soft)); transition:width 1.6s ease-out}
+.bar.go i{width:100%}
+
+.btn{
+  display:flex; align-items:center; justify-content:center; gap:10px;
+  width:100%; min-height:56px; padding:12px 18px; margin:8px 0 0;
+  border-radius:999px; text-decoration:none; font-weight:900; font-size:1.1rem; letter-spacing:.4px;
+  color:#14123a; background:linear-gradient(180deg,#f7d35a 0%,var(--gold) 45%,var(--gold-2) 100%);
+  border:3px solid #f6e7b0; box-shadow:0 6px 0 #9a6c10,0 10px 24px rgba(0,0,0,.35);
+  transition:transform .08s ease, box-shadow .08s ease;
+}
+.btn:active{transform:translateY(4px); box-shadow:0 2px 0 #9a6c10,0 6px 14px rgba(0,0,0,.35)}
+.btn:focus-visible,.link:focus-visible,.badge:focus-visible{outline:3px solid #fff; outline-offset:3px}
+.btn svg{width:22px; height:22px; flex:none}
+.link{color:var(--gold-soft); font-weight:700}
+.small{font-size:.88rem; color:var(--muted); margin:12px 0 0}
+.tip{
+  margin:16px 0 0; padding:12px 14px; text-align:left; font-size:.9rem; color:#e7e9ff;
+  background:rgba(245,197,66,.08); border:2px dashed rgba(245,197,66,.45); border-radius:14px;
+}
+.tip b{color:var(--gold-soft)}
+.badge{display:inline-block; margin:6px auto 0}
+.badge img{width:230px; max-width:100%; height:auto; display:block}
+.hide{display:none!important}
+.urlbox{display:inline-block; margin-top:6px; padding:4px 10px; border-radius:8px; background:rgba(255,255,255,.08); color:#fff; font-weight:700; word-break:break-all}
+footer{margin-top:18px; font-size:.75rem; color:rgba(255,255,255,.55)}
+
+@media (prefers-reduced-motion:reduce){.star,.spark{animation:none}.bar i{transition:none}}
+@media (min-height:820px){.host{width:150px;height:150px}}
+</style>
+</head>
+<body>
+<div class="sky" aria-hidden="true">
+  <div class="stars" id="stars"></div>
+  <div class="sun"></div>
+  <div class="grid"></div>
+</div>
+
+<main>
+  <img class="title" src="titulo.png" alt="Show do Galardão" width="900" height="239">
+  <div class="host" role="img" aria-label="Galardino, o apresentador"></div>
+
+  <!-- ===== Windows ===== -->
+  <section class="panel hide" id="win" aria-live="polite">
+    <h1 id="winTitle">Abrindo a Microsoft Store…</h1>
+    <p class="lead" id="winLead">Já vai começar! Se aparecer um aviso do navegador, clique em <b>“Abrir Microsoft Store”</b>.</p>
+    <div class="bar" id="bar"><i></i></div>
+    <a class="btn" id="storeApp" href="#">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="9.5" height="9.5" fill="#f25022"/><rect x="12.5" y="2" width="9.5" height="9.5" fill="#7fba00"/><rect x="2" y="12.5" width="9.5" height="9.5" fill="#00a4ef"/><rect x="12.5" y="12.5" width="9.5" height="9.5" fill="#ffb900"/></svg>
+      ABRIR NA MICROSOFT STORE
+    </a>
+    <p class="small">Não abriu? <a class="link" id="storeWeb" href="#">Abrir a Store pelo navegador</a></p>
+    <div class="tip">Na Store, clique em <b>Obter</b> e depois em <b>Abrir</b>. Se já tinha pegado o jogo antes, ele aparece em <b>Biblioteca</b> → <b>Instalar</b>.</div>
+  </section>
+
+  <!-- ===== Celular / outros ===== -->
+  <section class="panel hide" id="other">
+    <h1>Esta é a versão para PC</h1>
+    <p class="lead">O Show do Galardão para <b>Windows 10 e 11</b> é instalado pela Microsoft Store, no computador.</p>
+
+    <div id="androidBox" class="hide">
+      <p class="small" style="margin-top:0">Quer jogar no celular? Baixe grátis:</p>
+      <a class="badge" id="playBtn" href="https://play.google.com/store/apps/details?id=site.galardao"><img src="selo_google_play_ptbr.png" alt="Disponível no Google Play" width="646" height="250"></a>
+    </div>
+
+    <p class="small">Pra instalar no computador, abra este endereço nele:<br><span class="urlbox" id="linkTxt"></span></p>
+    <div class="tip">Já pegou a versão de PC pelo celular? Ela fica guardada na sua conta. No computador, abra a <b>Microsoft Store</b> → <b>Biblioteca</b> e clique em <b>Instalar</b>.</div>
+  </section>
+
+  <noscript>
+    <section class="panel">
+      <h1>Show do Galardão para Windows</h1>
+      <a class="btn" href="https://apps.microsoft.com/detail/9P8R4P1W55QB?cid=site">ABRIR NA MICROSOFT STORE</a>
+    </section>
+  </noscript>
+
+  <footer>TH Maestro Apps</footer>
+</main>
+
+<script>
+(function(){
+  // estrelas
+  var box=document.getElementById('stars'), n=window.innerWidth<600?45:90;
+  for(var i=0;i<n;i++){
+    var s=document.createElement('span'); s.className='star';
+    var z=Math.random()<.15?3:(Math.random()<.5?2:1);
+    s.style.width=s.style.height=z+'px';
+    s.style.left=(Math.random()*100)+'%'; s.style.top=(Math.random()*100)+'%';
+    s.style.animationDelay=(Math.random()*3)+'s';
+    box.appendChild(s);
+  }
+  for(var j=0;j<6;j++){
+    var k=document.createElement('span'); k.className='spark'; k.textContent='✦';
+    k.style.left=(5+Math.random()*90)+'%'; k.style.top=(5+Math.random()*80)+'%';
+    k.style.fontSize=(12+Math.random()*14)+'px'; k.style.animationDelay=(Math.random()*4)+'s';
+    box.appendChild(k);
+  }
+
+  // destino
+  var ID='9P8R4P1W55QB';
+  var params=new URLSearchParams(location.search);
+  var cid=(params.get('cid')||'site').replace(/[^\w-]/g,'').slice(0,40)||'site';
+  var appUrl='ms-windows-store://pdp/?productid='+ID+'&cid='+encodeURIComponent(cid);
+  var webUrl='https://apps.microsoft.com/detail/'+ID+'?cid='+encodeURIComponent(cid);
+  var ua=navigator.userAgent||'';
+  var isAndroid=/Android/i.test(ua);
+  var isMobile=isAndroid||/iPhone|iPad|iPod|Mobile/i.test(ua);
+  var isWindows=/Windows NT/i.test(ua)&&!isMobile;
+
+  document.getElementById('storeApp').href=appUrl;
+  document.getElementById('storeWeb').href=webUrl;
+
+  if(isWindows){
+    document.getElementById('win').classList.remove('hide');
+    requestAnimationFrame(function(){ document.getElementById('bar').classList.add('go'); });
+    setTimeout(function(){ location.href=appUrl; },1600);
+    setTimeout(function(){
+      document.getElementById('winTitle').textContent='Pronto pra instalar!';
+      document.getElementById('winLead').innerHTML='Se a Store não abriu sozinha, clique no botão abaixo.';
+    },3200);
+  }else{
+    document.getElementById('other').classList.remove('hide');
+    document.getElementById('linkTxt').textContent=location.host+location.pathname;
+    if(isAndroid){
+      document.getElementById('androidBox').classList.remove('hide');
+      var p=document.getElementById('playBtn');
+      p.href+='&referrer='+encodeURIComponent('utm_source='+cid+'_windows_page');
+    }
+  }
+})();
+</script>
+</body>
+</html>
