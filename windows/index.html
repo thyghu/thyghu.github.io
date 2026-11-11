@@ -77,7 +77,7 @@ h1{margin:0 0 4px; font-weight:900; font-size:1.35rem; color:var(--gold); letter
 
 /* barra de progresso dourada */
 .bar{height:14px; border-radius:999px; background:rgba(255,255,255,.08); border:2px solid rgba(245,197,66,.5); overflow:hidden; margin:6px 4px 16px}
-.bar i{display:block; height:100%; width:0; border-radius:999px; background:linear-gradient(90deg,var(--gold-2),var(--gold),var(--gold-soft)); transition:width 1.6s ease-out}
+.bar i{display:block; height:100%; width:0; border-radius:999px; background:linear-gradient(90deg,var(--gold-2),var(--gold),var(--gold-soft)); transition:width 2.2s ease-in-out}
 .bar.go i{width:100%}
 
 .btn{
@@ -102,10 +102,59 @@ h1{margin:0 0 4px; font-weight:900; font-size:1.35rem; color:var(--gold); letter
 .badge img{width:230px; max-width:100%; height:auto; display:block}
 .hide{display:none!important}
 .urlbox{display:inline-block; margin-top:6px; padding:4px 10px; border-radius:8px; background:rgba(255,255,255,.08); color:#fff; font-weight:700; word-break:break-all}
+.promo{margin-top:16px; padding:18px 18px 16px; border-color:var(--pink); background:linear-gradient(180deg,rgba(59,31,110,.92),rgba(26,10,58,.95)); box-shadow:0 0 22px rgba(255,63,180,.25),0 14px 40px rgba(0,0,0,.45)}
+.promo-row{display:flex; align-items:center; gap:14px; text-align:left}
+.promo h2{margin:0 0 2px; font-size:1.15rem; font-weight:900; color:var(--gold)}
+.promo p{margin:0; font-size:.92rem; color:#e7e9ff}
+.phone{
+  flex:none; width:76px; padding:5px 4px 9px; border-radius:16px; position:relative;
+  background:#0c0c14; border:2px solid var(--gold);
+  box-shadow:0 0 0 2px rgba(0,0,0,.4),0 0 16px rgba(245,197,66,.3),0 8px 20px rgba(0,0,0,.5);
+  transform:rotate(-6deg);
+}
+.phone img{display:block; width:100%; height:auto; border-radius:10px}
+.phone::after{content:""; position:absolute; left:50%; bottom:3px; width:18px; height:3px; margin-left:-9px; border-radius:2px; background:rgba(245,197,66,.7)}
+.promo .badge{margin-top:12px}
+.promo .badge img{width:200px}
 footer{margin-top:18px; font-size:.75rem; color:rgba(255,255,255,.55)}
 
+.cards{width:100%; display:flex; flex-direction:column; align-items:center}
+h1{font-size:clamp(1.12rem,4.6vw,1.45rem)}
+.btn{font-size:clamp(.92rem,3.8vw,1.1rem)}
+
+/* telas grandes: painéis lado a lado */
+@media (min-width:900px){
+  .cards{flex-direction:row; align-items:stretch; justify-content:center; gap:22px; max-width:940px}
+  .cards .panel{margin-top:14px; width:440px}
+  .cards .promo{width:340px; display:flex; flex-direction:column; justify-content:center}
+  .promo-row{flex-direction:column; text-align:center}
+  .phone{width:104px; margin-bottom:6px}
+  .promo .badge img{width:220px}
+  .title{width:min(46vw,560px)}
+}
+/* celular pequeno */
+@media (max-width:360px){
+  main{padding-left:12px; padding-right:12px}
+  .panel{padding:18px 14px 16px; border-radius:18px}
+  .host{width:104px; height:104px}
+  .btn{min-height:52px; padding:10px 12px; gap:8px}
+  .btn svg{width:18px; height:18px}
+  .tip{font-size:.84rem}
+  .promo-row{gap:10px}
+  .phone{width:62px; border-radius:13px}
+}
+/* celular deitado / tela baixa */
+@media (max-height:560px) and (orientation:landscape){
+  main{padding-top:14px; padding-bottom:16vh}
+  .title{width:min(50vw,340px)}
+  .host{width:78px; height:78px; margin:8px auto 2px; border-width:3px}
+  .sun{bottom:14vh; width:min(40vw,300px)}
+  .grid{height:14vh}
+  .cards{flex-direction:row; flex-wrap:wrap; align-items:stretch; justify-content:center; gap:14px}
+  .cards .panel{width:min(440px,48%); min-width:290px}
+}
+@media (min-height:820px) and (min-width:400px){.host{width:150px;height:150px}}
 @media (prefers-reduced-motion:reduce){.star,.spark{animation:none}.bar i{transition:none}}
-@media (min-height:820px){.host{width:150px;height:150px}}
 </style>
 </head>
 <body>
@@ -119,6 +168,7 @@ footer{margin-top:18px; font-size:.75rem; color:rgba(255,255,255,.55)}
   <img class="title" src="titulo.png" alt="Show do Galardão" width="900" height="239">
   <div class="host" role="img" aria-label="Galardino, o apresentador"></div>
 
+  <div class="cards">
   <!-- ===== Windows ===== -->
   <section class="panel hide" id="win" aria-live="polite">
     <h1 id="winTitle">Abrindo a Microsoft Store…</h1>
@@ -137,14 +187,22 @@ footer{margin-top:18px; font-size:.75rem; color:rgba(255,255,255,.55)}
     <h1>Esta é a versão para PC</h1>
     <p class="lead">O Show do Galardão para <b>Windows 10 e 11</b> é instalado pela Microsoft Store, no computador.</p>
 
-    <div id="androidBox" class="hide">
-      <p class="small" style="margin-top:0">Quer jogar no celular? Baixe grátis:</p>
-      <a class="badge" id="playBtn" href="https://play.google.com/store/apps/details?id=site.galardao"><img src="selo_google_play_ptbr.png" alt="Disponível no Google Play" width="646" height="250"></a>
-    </div>
-
     <p class="small">Pra instalar no computador, abra este endereço nele:<br><span class="urlbox" id="linkTxt"></span></p>
     <div class="tip">Já pegou a versão de PC pelo celular? Ela fica guardada na sua conta. No computador, abra a <b>Microsoft Store</b> → <b>Biblioteca</b> e clique em <b>Instalar</b>.</div>
   </section>
+
+  <!-- ===== Propaganda da versão Android (sempre) ===== -->
+  <section class="panel promo" aria-labelledby="promoTitle">
+    <div class="promo-row">
+      <div class="phone"><img src="print_celular.jpg" alt="Tela inicial do Show do Galardão no celular" width="240" height="484"></div>
+      <div class="promo-txt">
+        <h2 id="promoTitle">Também no celular!</h2>
+        <p>Jogue o Show do Galardão no <b>Android</b>, <b>grátis</b>. Mais de 270 perguntas bíblicas, sem precisar de internet.</p>
+      </div>
+    </div>
+    <a class="badge" id="playBtn" href="https://play.google.com/store/apps/details?id=site.galardao"><img src="selo_google_play_ptbr.png" alt="Disponível no Google Play" width="646" height="250"></a>
+  </section>
+  </div>
 
   <noscript>
     <section class="panel">
@@ -191,21 +249,25 @@ footer{margin-top:18px; font-size:.75rem; color:rgba(255,255,255,.55)}
 
   if(isWindows){
     document.getElementById('win').classList.remove('hide');
-    requestAnimationFrame(function(){ document.getElementById('bar').classList.add('go'); });
-    setTimeout(function(){ location.href=appUrl; },1600);
-    setTimeout(function(){
-      document.getElementById('winTitle').textContent='Pronto pra instalar!';
-      document.getElementById('winLead').innerHTML='Se a Store não abriu sozinha, clique no botão abaixo.';
-    },3200);
+    var bar=document.getElementById('bar'), fill=bar.querySelector('i'), foi=false;
+    function abrir(){
+      if(foi) return; foi=true;
+      location.href=appUrl;
+      setTimeout(function(){
+        document.getElementById('winTitle').textContent='Pronto pra instalar!';
+        document.getElementById('winLead').innerHTML='Se a Store não abriu sozinha, clique no botão abaixo.';
+      },1500);
+    }
+    // só redireciona depois que a barra enche
+    fill.addEventListener('transitionend',abrir);
+    setTimeout(function(){ requestAnimationFrame(function(){ bar.classList.add('go'); }); },150);
+    setTimeout(abrir,3500); // reserva, caso a animação não rode
   }else{
     document.getElementById('other').classList.remove('hide');
     document.getElementById('linkTxt').textContent=location.host+location.pathname;
-    if(isAndroid){
-      document.getElementById('androidBox').classList.remove('hide');
-      var p=document.getElementById('playBtn');
-      p.href+='&referrer='+encodeURIComponent('utm_source='+cid+'_windows_page');
-    }
   }
+  var p=document.getElementById('playBtn');
+  p.href+='&referrer='+encodeURIComponent('utm_source='+cid+'&utm_medium=windows_page');
 })();
 </script>
 </body>
