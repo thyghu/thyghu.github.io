@@ -79,7 +79,7 @@ h1{margin:0 0 4px; font-weight:900; font-size:1.35rem; color:var(--gold); letter
 
 /* barra de progresso dourada */
 .bar{height:14px; border-radius:999px; background:rgba(255,255,255,.08); border:2px solid rgba(245,197,66,.5); overflow:hidden; margin:6px 4px 16px}
-.bar i{display:block; height:100%; width:0; border-radius:999px; background:linear-gradient(90deg,var(--gold-2),var(--gold),var(--gold-soft)); transition:width 2.2s ease-in-out}
+.bar i{display:block; height:100%; width:0; border-radius:999px; background:linear-gradient(90deg,var(--gold-2),var(--gold),var(--gold-soft)); transition:width 10s linear}
 .bar.go i{width:100%}
 
 .btn{
@@ -282,7 +282,7 @@ h1{font-size:clamp(1.12rem,4.6vw,1.45rem)}
     // só redireciona depois que a barra enche
     fill.addEventListener('transitionend',abrir);
     setTimeout(function(){ requestAnimationFrame(function(){ bar.classList.add('go'); }); },150);
-    setTimeout(abrir,3500); // reserva, caso a animação não rode
+    setTimeout(abrir,11000); // reserva, caso a animação não rode
   }
 })();
 </script>
