@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Show do Galardão para Android</title>
+<meta name="description" content="Show do Galardão, o quiz bíblico, grátis no Google Play.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0b1446">
+<link rel="icon" type="image/png" sizes="64x64" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy-0:#070d33; --navy-1:#0b1446; --navy-2:#0e1e5b; --purple:#3b1f6e; --deep:#1a0a3a;
+  --gold:#f5c542; --gold-2:#d9a020; --gold-soft:#ffe08a; --ink:#ffffff; --muted:#c9cdf0;
+  --pink:#ff3fb4; --sun-1:#ffe066; --sun-2:#ff9a3c; --sun-3:#ff4f8b;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; color:var(--ink); background:var(--navy-1);
+  font:16px/1.5 "Roboto",system-ui,-apple-system,"Segoe UI",sans-serif;
+  overflow-x:hidden;
+}
+
+/* ===== Cenário ===== */
+.sky{
+  position:fixed; inset:0; z-index:0; overflow:hidden;
+  background:linear-gradient(180deg,var(--navy-0) 0%,var(--navy-1) 35%,#151e66 58%,var(--purple) 76%,var(--deep) 100%);
+}
+.stars{position:absolute; inset:0 0 35% 0}
+.star{position:absolute; background:#fff; border-radius:50%; opacity:.85; animation:twinkle 3s ease-in-out infinite}
+.spark{position:absolute; color:#e9e3c9; opacity:.75; font-size:18px; animation:twinkle 4s ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:.25}50%{opacity:1}}
+
+.sun{
+  position:absolute; left:50%; bottom:22vh; transform:translateX(-50%);
+  width:min(62vw,420px); aspect-ratio:2/1; border-radius:999px 999px 0 0;
+  background:linear-gradient(180deg,var(--sun-1) 0%,var(--sun-2) 45%,var(--sun-3) 100%);
+  -webkit-mask-image:linear-gradient(180deg,#000 0 46%,transparent 46%),repeating-linear-gradient(180deg,#000 0 7%,transparent 7% 10%);
+          mask-image:linear-gradient(180deg,#000 0 46%,transparent 46%),repeating-linear-gradient(180deg,#000 0 7%,transparent 7% 10%);
+  filter:drop-shadow(0 0 30px rgba(255,90,140,.35));
+}
+.grid{
+  position:absolute; left:-50%; right:-50%; bottom:0; height:22vh;
+  background:
+    repeating-linear-gradient(90deg,transparent 0 58px,var(--pink) 58px 60px),
+    repeating-linear-gradient(0deg,transparent 0 26px,var(--pink) 26px 28px),
+    var(--deep);
+  transform:perspective(220px) rotateX(58deg); transform-origin:50% 0;
+  box-shadow:0 -2px 14px rgba(255,63,180,.6);
+  opacity:.9;
+}
+.grid::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,var(--deep) 0%,transparent 40%)}
+
+/* ===== Conteúdo ===== */
+main{
+  position:relative; z-index:1; min-height:100%;
+  display:flex; flex-direction:column; align-items:center; justify-content:flex-start;
+  padding:max(28px,env(safe-area-inset-top)) 16px 30vh; text-align:center;
+}
+.title{width:min(88vw,520px); height:auto; display:block; margin:8px auto 0; filter:drop-shadow(0 6px 18px rgba(245,197,66,.25))}
+.host{
+  width:132px; height:132px; border-radius:50%; margin:14px auto 6px;
+  background:var(--navy-2) url(apresentador.png) center 12px/96% auto no-repeat;
+  border:4px solid var(--gold); box-shadow:0 0 0 6px rgba(245,197,66,.15),0 10px 30px rgba(0,0,0,.4);
+}
+.panel{
+  width:min(100%,440px); margin-top:10px; padding:22px 20px 20px;
+  background:linear-gradient(180deg,rgba(14,30,91,.92),rgba(7,13,51,.95));
+  border:3px solid var(--gold); border-radius:22px;
+  box-shadow:0 14px 40px rgba(0,0,0,.45);
+}
+h1{margin:0 0 4px; font-weight:900; font-size:1.35rem; color:var(--gold); letter-spacing:.3px}
+.lead{margin:0 0 14px; color:var(--muted)}
+
+/* barra de progresso dourada */
+.bar{height:14px; border-radius:999px; background:rgba(255,255,255,.08); border:2px solid rgba(245,197,66,.5); overflow:hidden; margin:6px 4px 16px}
+.bar i{display:block; height:100%; width:0; border-radius:999px; background:linear-gradient(90deg,var(--gold-2),var(--gold),var(--gold-soft)); transition:width 2.2s ease-in-out}
+.bar.go i{width:100%}
+
+.btn{
+  display:flex; align-items:center; justify-content:center; gap:10px;
+  width:100%; min-height:56px; padding:12px 18px; margin:8px 0 0;
+  border-radius:999px; text-decoration:none; font-weight:900; font-size:1.1rem; letter-spacing:.4px;
+  color:#14123a; background:linear-gradient(180deg,#f7d35a 0%,var(--gold) 45%,var(--gold-2) 100%);
+  border:3px solid #f6e7b0; box-shadow:0 6px 0 #9a6c10,0 10px 24px rgba(0,0,0,.35);
+  transition:transform .08s ease, box-shadow .08s ease;
+}
+.btn:active{transform:translateY(4px); box-shadow:0 2px 0 #9a6c10,0 6px 14px rgba(0,0,0,.35)}
+.btn:focus-visible,.link:focus-visible,.badge:focus-visible{outline:3px solid #fff; outline-offset:3px}
+.btn svg{width:22px; height:22px; flex:none}
+.link{color:var(--gold-soft); font-weight:700}
+.small{font-size:.88rem; color:var(--muted); margin:12px 0 0}
+.tip{
+  margin:16px 0 0; padding:12px 14px; text-align:left; font-size:.9rem; color:#e7e9ff;
+  background:rgba(245,197,66,.08); border:2px dashed rgba(245,197,66,.45); border-radius:14px;
+}
+.tip b{color:var(--gold-soft)}
+.badge{display:inline-block; margin:6px auto 0}
+.badge img{width:230px; max-width:100%; height:auto; display:block}
+.hide{display:none!important}
+.urlbox{display:inline-block; margin-top:6px; padding:4px 10px; border-radius:8px; background:rgba(255,255,255,.08); color:#fff; font-weight:700; word-break:break-all}
+.promo{margin-top:16px; padding:18px 18px 16px; border-color:var(--pink); background:linear-gradient(180deg,rgba(59,31,110,.92),rgba(26,10,58,.95)); box-shadow:0 0 22px rgba(255,63,180,.25),0 14px 40px rgba(0,0,0,.45)}
+.promo-row{display:flex; align-items:center; gap:14px; text-align:left}
+.promo h2{margin:0 0 2px; font-size:1.15rem; font-weight:900; color:var(--gold)}
+.promo p{margin:0; font-size:.92rem; color:#e7e9ff}
+/* notebook com print do jogo */
+.laptop{flex:none; width:130px; position:relative}
+.laptop .scr{padding:4px; border-radius:7px 7px 2px 2px; background:#0c0c14; border:2px solid var(--gold); box-shadow:0 0 16px rgba(245,197,66,.3)}
+.laptop .scr img{display:block; width:100%; height:auto; border-radius:3px}
+.laptop .base{height:7px; margin:0 -10px; border-radius:0 0 8px 8px; background:linear-gradient(180deg,#f5c542,#b8861a); box-shadow:0 6px 14px rgba(0,0,0,.45)}
+.laptop .base::after{content:""; display:block; width:24%; height:3px; margin:0 auto; border-radius:0 0 4px 4px; background:rgba(0,0,0,.35)}
+.promo .badge{margin-top:12px}
+.promo .badge img{width:200px}
+footer{margin-top:18px; font-size:.75rem; color:rgba(255,255,255,.55)}
+
+.cards{width:100%; display:flex; flex-direction:column; align-items:center}
+h1{font-size:clamp(1.12rem,4.6vw,1.45rem)}
+.btn{font-size:clamp(.92rem,3.8vw,1.1rem)}
+
+/* telas grandes: painéis lado a lado */
+@media (min-width:900px){
+  .cards{flex-direction:row; align-items:stretch; justify-content:center; gap:22px; max-width:940px}
+  .cards .panel{margin-top:14px; width:440px}
+  .cards .promo{width:340px; display:flex; flex-direction:column; justify-content:center}
+  .promo-row{flex-direction:column; text-align:center}
+  .laptop{width:210px; margin:4px auto 10px}
+  .promo .badge img{width:220px}
+  .title{width:min(46vw,560px)}
+}
+/* celular pequeno */
+@media (max-width:360px){
+  main{padding-left:12px; padding-right:12px}
+  .panel{padding:18px 14px 16px; border-radius:18px}
+  .host{width:104px; height:104px}
+  .btn{min-height:52px; padding:10px 12px; gap:8px}
+  .btn svg{width:18px; height:18px}
+  .tip{font-size:.84rem}
+  .promo-row{gap:10px}
+  .laptop{width:104px}
+}
+/* celular deitado / tela baixa */
+@media (max-height:560px) and (orientation:landscape){
+  main{padding-top:14px; padding-bottom:16vh}
+  .title{width:min(50vw,340px)}
+  .host{width:78px; height:78px; margin:8px auto 2px; border-width:3px}
+  .sun{bottom:14vh; width:min(40vw,300px)}
+  .grid{height:14vh}
+  .cards{flex-direction:row; flex-wrap:wrap; align-items:stretch; justify-content:center; gap:14px}
+  .cards .panel{width:min(440px,48%); min-width:290px}
+}
+@media (min-height:820px) and (min-width:400px){.host{width:150px;height:150px}}
+@media (prefers-reduced-motion:reduce){.star,.spark{animation:none}.bar i{transition:none}}
+</style>
+</head>
+<body>
+<div class="sky" aria-hidden="true">
+  <div class="stars" id="stars"></div>
+  <div class="sun"></div>
+  <div class="grid"></div>
+</div>
+
+<main>
+  <img class="title" src="titulo.png" alt="Show do Galardão" width="900" height="239">
+  <div class="host" role="img" aria-label="Galardino, o apresentador"></div>
+
+  <div class="cards">
+  <!-- ===== Indo pro Google Play (Android e computador) ===== -->
+  <section class="panel hide" id="go" aria-live="polite">
+    <h1 id="goTitle">Abrindo o Google Play…</h1>
+    <p class="lead" id="goLead">Já vai começar! O Show do Galardão é <b>grátis</b> no Android.</p>
+    <div class="bar" id="bar"><i></i></div>
+    <a class="btn" id="playApp" href="#" data-goatcounter-click="clique-botao-play" data-goatcounter-title="Clicou no botão Abrir no Google Play">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#00d46a" d="M3.6 2.2 13.4 12l-9.8 9.8c-.4-.2-.6-.6-.6-1.1V3.3c0-.5.2-.9.6-1.1z"/><path fill="#ffc400" d="m16.7 15.3-3.3-3.3 3.3-3.3 3.8 2.2c1.1.6 1.1 1.6 0 2.2z"/><path fill="#ff3a44" d="M16.7 15.3 13.4 12l-9.8 9.8c.4.2.9.2 1.4-.1z"/><path fill="#00a0ff" d="M16.7 8.7 5 2.3c-.5-.3-1-.3-1.4-.1L13.4 12z"/></svg>
+      ABRIR NO GOOGLE PLAY
+    </a>
+    <div class="tip" id="tipAndroid">No Google Play, toque em <b>Instalar</b> e depois em <b>Abrir</b>. Funciona sem internet depois de instalado!</div>
+    <div class="tip hide" id="tipPc">No computador, o Google Play abre no navegador: clique em <b>Instalar</b> e escolha o seu celular Android. O jogo é instalado nele sozinho.</div>
+  </section>
+
+  <!-- ===== iPhone / iPad ===== -->
+  <section class="panel hide" id="ios">
+    <h1>Ainda não tem para iPhone</h1>
+    <p class="lead">O Show do Galardão está disponível para <b>celular Android</b> e para <b>computador com Windows</b>.</p>
+    <a class="btn" id="playIos" href="#" data-goatcounter-click="clique-play-iphone" data-goatcounter-title="iPhone clicou no Google Play">VER NO GOOGLE PLAY</a>
+  </section>
+
+  <!-- ===== Propaganda da versão Windows (sempre) ===== -->
+  <section class="panel promo" aria-labelledby="promoTitle">
+    <div class="promo-row">
+      <div class="laptop"><div class="scr"><img src="print_pc.jpg" alt="Pergunta do Show do Galardão na versão para computador" width="480" height="270"></div><div class="base"></div></div>
+      <div class="promo-txt">
+        <h2 id="promoTitle">Também no computador!</h2>
+        <p>Jogue no <b>Windows 10 e 11</b>, em tela cheia, no telão com a igreja, a célula ou a família. <b>Sem anúncios</b> e sem precisar de internet.</p>
+      </div>
+    </div>
+    <a class="badge" id="msBtn" href="../windows/?cid=pagina_android" data-goatcounter-click="clique-versao-windows" data-goatcounter-title="Clicou na versão para Windows"><img src="selo_microsoft_store_ptbr.png" alt="Baixe na Microsoft Store" width="644" height="176"></a>
+  </section>
+  </div>
+
+  <noscript>
+    <section class="panel">
+      <h1>Show do Galardão para Android</h1>
+      <a class="btn" href="https://play.google.com/store/apps/details?id=site.galardao">ABRIR NO GOOGLE PLAY</a>
+    </section>
+  </noscript>
+
+  <footer>TH Maestro Apps</footer>
+</main>
+
+<!-- Contador de visitas (GoatCounter, sem cookies). Conta a página separada por cid. -->
+<script>
+  (function(){
+    var c=(new URLSearchParams(location.search).get('cid')||'site').replace(/[^\w-]/g,'').slice(0,40)||'site';
+    window.goatcounter={path:'/android?cid='+c};
+  })();
+</script>
+<script data-goatcounter="https://thyghu.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+
+<script>
+(function(){
+  // estrelas
+  var box=document.getElementById('stars'), n=window.innerWidth<600?45:90;
+  for(var i=0;i<n;i++){
+    var s=document.createElement('span'); s.className='star';
+    var z=Math.random()<.15?3:(Math.random()<.5?2:1);
+    s.style.width=s.style.height=z+'px';
+    s.style.left=(Math.random()*100)+'%'; s.style.top=(Math.random()*100)+'%';
+    s.style.animationDelay=(Math.random()*3)+'s';
+    box.appendChild(s);
+  }
+  for(var j=0;j<6;j++){
+    var k=document.createElement('span'); k.className='spark'; k.textContent='✦';
+    k.style.left=(5+Math.random()*90)+'%'; k.style.top=(5+Math.random()*80)+'%';
+    k.style.fontSize=(12+Math.random()*14)+'px'; k.style.animationDelay=(Math.random()*4)+'s';
+    box.appendChild(k);
+  }
+
+  // destino: Google Play (com origem pro Play Console)
+  var params=new URLSearchParams(location.search);
+  var cid=(params.get('cid')||'site').replace(/[^\w-]/g,'').slice(0,40)||'site';
+  var playUrl='https://play.google.com/store/apps/details?id=site.galardao&referrer='+encodeURIComponent('utm_source='+cid+'&utm_medium=android_page');
+  var ua=navigator.userAgent||'';
+  var isAndroid=/Android/i.test(ua);
+  var isIos=/iPhone|iPad|iPod/i.test(ua)||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1);
+
+  document.getElementById('playApp').href=playUrl;
+  document.getElementById('playIos').href=playUrl;
+
+  if(isIos){
+    document.getElementById('ios').classList.remove('hide');
+  }else{
+    document.getElementById('go').classList.remove('hide');
+    if(!isAndroid){
+      document.getElementById('tipAndroid').classList.add('hide');
+      document.getElementById('tipPc').classList.remove('hide');
+    }
+    var bar=document.getElementById('bar'), fill=bar.querySelector('i'), foi=false;
+    function abrir(){
+      if(foi) return; foi=true;
+      try{ if(window.goatcounter&&window.goatcounter.count) window.goatcounter.count({path:'play-aberto-auto-'+cid, title:'Abriu o Google Play automaticamente', event:true}); }catch(e){}
+      setTimeout(function(){ location.href=playUrl; },120);
+      setTimeout(function(){
+        document.getElementById('goTitle').textContent='Pronto pra instalar!';
+        document.getElementById('goLead').innerHTML='Se o Google Play não abriu sozinho, toque no botão abaixo.';
+      },1800);
+    }
+    // só redireciona depois que a barra enche
+    fill.addEventListener('transitionend',abrir);
+    setTimeout(function(){ requestAnimationFrame(function(){ bar.classList.add('go'); }); },150);
+    setTimeout(abrir,3500); // reserva, caso a animação não rode
+  }
+})();
+</script>
+</body>
+</html>
