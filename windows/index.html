@@ -176,11 +176,11 @@ h1{font-size:clamp(1.12rem,4.6vw,1.45rem)}
     <h1 id="winTitle">Abrindo a Microsoft Store…</h1>
     <p class="lead" id="winLead">Já vai começar! Se aparecer um aviso do navegador, clique em <b>“Abrir Microsoft Store”</b>.</p>
     <div class="bar" id="bar"><i></i></div>
-    <a class="btn" id="storeApp" href="#">
+    <a class="btn" id="storeApp" href="#" data-goatcounter-click="clique-botao-store" data-goatcounter-title="Clicou no botão Abrir na Microsoft Store">
       <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="9.5" height="9.5" fill="#f25022"/><rect x="12.5" y="2" width="9.5" height="9.5" fill="#7fba00"/><rect x="2" y="12.5" width="9.5" height="9.5" fill="#00a4ef"/><rect x="12.5" y="12.5" width="9.5" height="9.5" fill="#ffb900"/></svg>
       ABRIR NA MICROSOFT STORE
     </a>
-    <p class="small">Não abriu? <a class="link" id="storeWeb" href="#">Abrir a Store pelo navegador</a></p>
+    <p class="small">Não abriu? <a class="link" id="storeWeb" href="#" data-goatcounter-click="clique-store-navegador" data-goatcounter-title="Clicou em Abrir a Store pelo navegador">Abrir a Store pelo navegador</a></p>
     <div class="tip">Na Store, clique em <b>Obter</b> e depois em <b>Abrir</b>. Se já havia adquirido o jogo, ele aparece em <b>Biblioteca</b> → <b>Instalar</b>.</div>
   </section>
 
@@ -202,7 +202,7 @@ h1{font-size:clamp(1.12rem,4.6vw,1.45rem)}
         <p>Jogue o Show do Galardão no <b>Android</b>, <b>grátis</b>. Mais de 270 perguntas bíblicas, sem precisar de internet.</p>
       </div>
     </div>
-    <a class="badge" id="playBtn" href="https://play.google.com/store/apps/details?id=site.galardao"><img src="selo_google_play_ptbr.png" alt="Disponível no Google Play" width="646" height="250"></a>
+    <a class="badge" id="playBtn" href="https://play.google.com/store/apps/details?id=site.galardao" data-goatcounter-click="clique-google-play" data-goatcounter-title="Clicou no Google Play"><img src="selo_google_play_ptbr.png" alt="Disponível no Google Play" width="646" height="250"></a>
   </section>
   </div>
 
@@ -215,6 +215,15 @@ h1{font-size:clamp(1.12rem,4.6vw,1.45rem)}
 
   <footer>TH Maestro Apps</footer>
 </main>
+
+<!-- Contador de visitas (GoatCounter, sem cookies). Conta a página separada por cid. -->
+<script>
+  (function(){
+    var c=(new URLSearchParams(location.search).get('cid')||'site').replace(/[^\w-]/g,'').slice(0,40)||'site';
+    window.goatcounter={path:'/windows?cid='+c};
+  })();
+</script>
+<script data-goatcounter="https://thyghu.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 
 <script>
 (function(){
@@ -254,6 +263,7 @@ h1{font-size:clamp(1.12rem,4.6vw,1.45rem)}
     var bar=document.getElementById('bar'), fill=bar.querySelector('i'), foi=false;
     function abrir(){
       if(foi) return; foi=true;
+      try{ if(window.goatcounter&&window.goatcounter.count) window.goatcounter.count({path:'store-aberta-auto-'+cid, title:'Abriu a Store automaticamente', event:true}); }catch(e){}
       location.href=appUrl;
       setTimeout(function(){
         document.getElementById('winTitle').textContent='Pronto pra instalar!';
