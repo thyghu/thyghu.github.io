@@ -1,0 +1,310 @@
+/* TH Maestro Apps — site oficial (mesma estética das páginas /windows e /android) */
+:root{
+  --navy-0:#070d33; --navy-1:#0b1446; --navy-2:#0e1e5b; --purple:#3b1f6e; --deep:#1a0a3a;
+  --gold:#f5c542; --gold-2:#d9a020; --gold-soft:#ffe08a; --ink:#ffffff; --muted:#c9cdf0;
+  --pink:#ff3fb4; --sun-1:#ffe066; --sun-2:#ff9a3c; --sun-3:#ff4f8b;
+  --panel:linear-gradient(180deg,rgba(14,30,91,.92),rgba(7,13,51,.95));
+  --radius:22px; --max:1080px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth; scroll-padding-top:76px}
+body{
+  margin:0; color:var(--ink); background:var(--navy-1);
+  font:16px/1.6 "Roboto",system-ui,-apple-system,"Segoe UI",sans-serif;
+  overflow-x:hidden;
+}
+img{max-width:100%; height:auto}
+a{color:var(--gold-soft)}
+a:focus-visible,button:focus-visible{outline:3px solid #fff; outline-offset:3px; border-radius:6px}
+.skip{position:absolute; left:-999px; top:8px; z-index:50; padding:8px 14px; background:var(--gold); color:#14123a; border-radius:8px; font-weight:700}
+.skip:focus{left:8px}
+
+/* ===== Cenário (céu, sol e grade) ===== */
+.sky{position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none;
+  background:linear-gradient(180deg,var(--navy-0) 0%,var(--navy-1) 35%,#151e66 58%,var(--purple) 76%,var(--deep) 100%)}
+.stars{position:absolute; inset:0 0 35% 0}
+.star{position:absolute; background:#fff; border-radius:50%; opacity:.7}
+.star.tw{animation:twinkle 3s ease-in-out infinite} /* só algumas piscam */
+.spark{position:absolute; color:#e9e3c9; opacity:.75; font-size:18px; animation:twinkle 4s ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:.25}50%{opacity:1}}
+.sun{position:absolute; left:50%; bottom:22vh; transform:translateX(-50%);
+  width:min(62vw,420px); aspect-ratio:2/1; border-radius:999px 999px 0 0;
+  background:linear-gradient(180deg,var(--sun-1) 0%,var(--sun-2) 45%,var(--sun-3) 100%);
+  -webkit-mask-image:linear-gradient(180deg,#000 0 46%,transparent 46%),repeating-linear-gradient(180deg,#000 0 7%,transparent 7% 10%);
+          mask-image:linear-gradient(180deg,#000 0 46%,transparent 46%),repeating-linear-gradient(180deg,#000 0 7%,transparent 7% 10%);
+  opacity:.55}
+.grid{position:absolute; left:-50%; right:-50%; bottom:0; height:22vh;
+  background:repeating-linear-gradient(90deg,transparent 0 58px,var(--pink) 58px 60px),
+             repeating-linear-gradient(0deg,transparent 0 26px,var(--pink) 26px 28px),var(--deep);
+  transform:perspective(220px) rotateX(58deg); transform-origin:50% 0;
+  box-shadow:0 -2px 14px rgba(255,63,180,.6); opacity:.55}
+.grid::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,var(--deep) 0%,transparent 40%)}
+
+/* ===== Cabeçalho e menu ===== */
+.top{position:sticky; top:0; z-index:20;
+  background:rgba(7,13,51,.95); border-bottom:1px solid rgba(245,197,66,.25)}
+.top-in{max-width:var(--max); margin:0 auto; padding:10px 16px; display:flex; align-items:center; gap:14px}
+.brand{display:flex; align-items:center; gap:10px; color:#fff; text-decoration:none; font-weight:900; letter-spacing:.3px; margin-right:auto}
+.brand img{width:40px; height:40px; border-radius:10px; border:2px solid var(--gold)}
+.menu{display:flex; gap:4px; list-style:none; margin:0; padding:0}
+.menu a{display:block; padding:8px 12px; border-radius:999px; color:#e7e9ff; text-decoration:none; font-weight:700; font-size:.95rem}
+.menu a:hover{background:rgba(245,197,66,.12); color:var(--gold-soft)}
+.menu a[aria-current="page"]{color:var(--gold)}
+.menu .cta a{background:var(--gold); color:#14123a}
+.menu .cta a:hover{background:var(--gold-soft); color:#14123a}
+.burger{display:none; background:none; border:2px solid rgba(245,197,66,.6); color:var(--gold); border-radius:10px; width:44px; height:40px; cursor:pointer; font-size:1.3rem; line-height:1}
+@media (max-width:760px){
+  .burger{display:block}
+  .menu{display:none; position:absolute; left:0; right:0; top:100%; flex-direction:column; padding:8px 12px 14px;
+    background:rgba(7,13,51,.97); border-bottom:1px solid rgba(245,197,66,.25)}
+  .menu.open{display:flex}
+  .menu a{padding:12px 14px; font-size:1.05rem}
+}
+
+/* ===== Estrutura ===== */
+main{position:relative; z-index:1; overflow-x:clip} /* as animações que vêm dos lados não criam rolagem lateral */
+.wrap{max-width:var(--max); margin:0 auto; padding:0 16px}
+section{padding:56px 0 8px}
+.panel{background:var(--panel); border:3px solid var(--gold); border-radius:var(--radius); box-shadow:0 14px 40px rgba(0,0,0,.45)}
+h1,h2,h3{line-height:1.25}
+.sec-title{text-align:center; margin:0 0 6px; font-weight:900; font-size:clamp(1.5rem,4.6vw,2.2rem); color:var(--gold)}
+.sec-lead{text-align:center; margin:0 auto 26px; max-width:640px; color:var(--muted)}
+
+/* ===== Botões ===== */
+.btn{display:inline-flex; align-items:center; justify-content:center; gap:10px; min-height:54px; padding:12px 24px;
+  border-radius:999px; text-decoration:none; font-weight:900; font-size:1.05rem; letter-spacing:.3px;
+  color:#14123a; background:linear-gradient(180deg,#f7d35a 0%,var(--gold) 45%,var(--gold-2) 100%);
+  border:3px solid #f6e7b0; box-shadow:0 6px 0 #9a6c10,0 10px 24px rgba(0,0,0,.35);
+  transition:transform .08s ease, box-shadow .08s ease}
+.btn:active{transform:translateY(4px); box-shadow:0 2px 0 #9a6c10,0 6px 14px rgba(0,0,0,.35)}
+.btn svg{width:22px; height:22px; flex:none}
+.btn.alt{background:linear-gradient(180deg,#4b2a8a,#2a1460); color:#fff; border-color:var(--pink); box-shadow:0 6px 0 #6a1a5a,0 10px 24px rgba(0,0,0,.35)}
+
+/* ===== Hero ===== */
+.hero{padding:34px 0 10px; text-align:center}
+.hero .title{width:min(88vw,560px); display:block; margin:0 auto; filter:drop-shadow(0 6px 18px rgba(245,197,66,.25))}
+.hero .host{width:150px; height:150px; border-radius:50%; margin:16px auto 8px;
+  background:var(--navy-2) url(../img/apresentador.webp) center 12px/96% auto no-repeat;
+  border:4px solid var(--gold); box-shadow:0 0 0 6px rgba(245,197,66,.15),0 10px 30px rgba(0,0,0,.4)}
+.hero h1{margin:8px auto 6px; max-width:720px; font-size:clamp(1.35rem,5vw,2.1rem); font-weight:900}
+.hero p{margin:0 auto; max-width:640px; color:#e7e9ff; font-size:1.05rem}
+.hero .ctas{display:flex; flex-wrap:wrap; justify-content:center; gap:14px; margin:24px 0 6px}
+.chips{display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin:18px 0 0; padding:0; list-style:none}
+.chips li{padding:6px 12px; border-radius:999px; font-size:.88rem; font-weight:700; color:var(--gold-soft);
+  background:rgba(245,197,66,.08); border:1px solid rgba(245,197,66,.4)}
+
+/* ===== Recursos ===== */
+.features{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:16px; margin:0; padding:0; list-style:none}
+.feature{padding:20px 18px; text-align:left}
+.feature .ico{width:46px; height:46px; border-radius:14px; display:grid; place-items:center; margin-bottom:10px;
+  background:rgba(245,197,66,.12); border:2px solid rgba(245,197,66,.5); font-size:1.4rem}
+.feature h3{margin:0 0 4px; font-size:1.08rem; color:var(--gold-soft)}
+.feature p{margin:0; color:var(--muted); font-size:.95rem}
+
+/* ===== Versões ===== */
+.versions{display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:22px}
+.version{padding:24px 22px 22px; display:flex; flex-direction:column}
+.version.android{border-color:var(--pink); background:linear-gradient(180deg,rgba(59,31,110,.92),rgba(26,10,58,.95)); box-shadow:0 0 22px rgba(255,63,180,.2),0 14px 40px rgba(0,0,0,.45)}
+.version .tag{align-self:flex-start; padding:4px 10px; border-radius:999px; font-size:.78rem; font-weight:900; letter-spacing:.6px; text-transform:uppercase; background:var(--gold); color:#14123a}
+.version.android .tag{background:var(--pink); color:#fff}
+.version h3{margin:12px 0 6px; font-size:1.5rem; font-weight:900}
+.version ul{margin:4px 0 18px; padding-left:20px; color:#e7e9ff}
+.version li{margin:4px 0}
+.version .shot{margin:0 0 18px; border-radius:14px; overflow:hidden; border:2px solid rgba(255,255,255,.12); background:#000}
+.version .shot img{display:block; width:100%}
+
+/* ===== Aparelhos desenhados em CSS (monitor, tablet e celular) ===== */
+.devices{margin:4px 0 22px; position:relative}
+.devices .tela{overflow:hidden; background:#000; border-radius:4px}
+.devices .tela img{display:block; width:100%; height:auto}
+/* monitor: moldura fina, pescoço e base */
+.monitor{position:relative; padding:9px 9px 16px; border-radius:12px; margin:0 auto 46px; width:100%;
+  background:linear-gradient(180deg,#2a2d3a,#15161d); box-shadow:0 0 0 2px #3a3e4f,0 16px 30px rgba(0,0,0,.5)}
+.monitor::before{content:""; position:absolute; left:50%; bottom:-34px; width:16%; height:34px; transform:translateX(-50%);
+  background:linear-gradient(90deg,#1b1d26,#3a3e4f 50%,#1b1d26); clip-path:polygon(18% 0,82% 0,100% 100%,0 100%)}
+.monitor::after{content:""; position:absolute; left:50%; bottom:-42px; width:38%; height:9px; transform:translateX(-50%);
+  border-radius:8px 8px 3px 3px; background:linear-gradient(180deg,#3a3e4f,#15161d); box-shadow:0 8px 16px rgba(0,0,0,.45)}
+/* tablet deitado + celular na frente */
+.combo{padding:0 0 4% 0}
+.tablet{width:86%; padding:3.2%; border-radius:18px; background:linear-gradient(160deg,#2a2d3a,#111218);
+  box-shadow:0 0 0 2px #3a3e4f,0 16px 30px rgba(0,0,0,.5)}
+.tablet .tela{border-radius:6px}
+.celular{position:absolute; right:0; bottom:0; width:31%; padding:2.2% 1.6%; border-radius:18px;
+  background:linear-gradient(160deg,#2a2d3a,#0c0c14); box-shadow:0 0 0 2px var(--pink),0 14px 28px rgba(0,0,0,.6)}
+.celular .tela{border-radius:10px; position:relative}
+.celular .tela::before{content:""; position:absolute; top:1.6%; left:50%; width:6%; aspect-ratio:1; border-radius:50%; transform:translateX(-50%); background:#0c0c14; z-index:1}
+.version .actions{margin-top:auto; display:flex; flex-direction:column; align-items:center; gap:10px}
+.version .badge img{width:220px; display:block}
+.version .actions .btn{width:100%}
+
+/* ===== Telas que trocam sozinhas dentro dos aparelhos ===== */
+.slides{position:relative; overflow:hidden}
+.monitor .slides{aspect-ratio:16/9}
+.tablet .slides{aspect-ratio:16/10}
+.celular .slides{aspect-ratio:9/16}
+.slide{position:absolute; inset:0; margin:0; opacity:0; transform:scale(1.05); transition:opacity .9s ease, transform 4s ease-out; will-change:opacity,transform}
+.slide.on{opacity:1; transform:scale(1)}
+.slide img{display:block; width:100%; height:100%; object-fit:cover}
+
+/* ===== Vídeo ===== */
+.video{position:relative; max-width:860px; margin:0 auto; aspect-ratio:16/9; overflow:hidden; padding:0}
+.video button{position:absolute; inset:0; width:100%; height:100%; border:0; padding:0; cursor:pointer; background:#000}
+.video button img{width:100%; height:100%; object-fit:cover}
+.video .play{position:absolute; left:50%; top:50%; width:84px; height:84px; margin:-42px 0 0 -42px; border-radius:50%;
+  background:var(--gold); display:grid; place-items:center; box-shadow:0 0 0 8px rgba(245,197,66,.25),0 10px 30px rgba(0,0,0,.5)}
+.video .play svg{width:34px; height:34px; margin-left:5px}
+.video iframe{position:absolute; inset:0; width:100%; height:100%; border:0}
+.video-note{text-align:center; font-size:.82rem; color:var(--muted); margin:10px 0 0}
+
+/* ===== Chamada final ===== */
+.final{padding:30px 22px; text-align:center}
+.final h2{margin:0 0 6px; color:var(--gold); font-weight:900; font-size:clamp(1.4rem,4.4vw,1.9rem)}
+.final p{margin:0 0 18px; color:#e7e9ff}
+.final .ctas{display:flex; flex-wrap:wrap; justify-content:center; gap:14px}
+
+/* ===== Termos ===== */
+/* painel claro e translúcido por cima do cenário, para leitura confortável */
+.doc{
+  position:relative; max-width:860px; margin:26px auto 0; padding:30px clamp(18px,4.5vw,48px) 32px;
+  color:#1b1f3b; background:rgba(255,255,255,.94); border-radius:24px;
+  border:3px solid var(--gold); box-shadow:0 18px 50px rgba(0,0,0,.45);
+}
+.doc a{color:#5a2bb0; word-break:break-word}
+.doc .doc-title{margin:0; text-align:center; font-weight:900; color:#2a1460; font-size:clamp(1.25rem,4.4vw,1.85rem); letter-spacing:.3px}
+.doc .doc-date{margin:4px 0 20px; text-align:center; color:#5b5f80; font-weight:700}
+.doc h2{margin:30px 0 10px; font-size:1.12rem; font-weight:900; color:#2a1460; padding:6px 0 6px 12px;
+  border-left:5px solid var(--gold); background:linear-gradient(90deg,rgba(245,197,66,.22),transparent 70%); border-radius:4px}
+.doc h3{margin:20px 0 6px; font-size:1.02rem; font-weight:900; color:#5a2bb0}
+.doc h4{margin:16px 0 6px; font-size:.98rem; font-weight:700; color:#5a2bb0}
+.doc p{margin:0 0 12px; line-height:1.7}
+.doc p.item{padding:8px 12px; border-left:3px solid var(--gold-2); background:rgba(42,20,96,.05); border-radius:0 10px 10px 0}
+.doc p.sign{margin-top:20px}
+.toc{max-width:860px; margin:26px auto 0; padding:16px 22px}
+.toc h2{margin:0 0 8px; font-size:1rem; color:var(--gold-soft)}
+.toc ol{margin:0; padding-left:20px; columns:2 220px; column-gap:24px}
+.toc li{margin:3px 0; break-inside:avoid}
+.toc a{color:#e7e9ff}
+.toc a:hover{color:var(--gold-soft)}
+.to-top{position:fixed; right:16px; bottom:16px; z-index:15; width:46px; height:46px; border-radius:50%;
+  display:grid; place-items:center; text-decoration:none; font-weight:900; font-size:1.2rem;
+  background:var(--gold); color:#14123a; box-shadow:0 8px 20px rgba(0,0,0,.4)}
+
+/* ===== Rodapé ===== */
+footer{position:relative; z-index:1; margin-top:56px; padding:26px 16px 34px; background:rgba(7,13,51,.88); border-top:1px solid rgba(245,197,66,.25); text-align:center; font-size:.9rem; color:var(--muted)}
+footer nav{display:flex; flex-wrap:wrap; justify-content:center; gap:6px 18px; margin-bottom:10px}
+footer nav a{color:#e7e9ff; font-weight:700; text-decoration:none}
+footer nav a:hover{color:var(--gold-soft)}
+footer .legal{font-size:.78rem; color:rgba(255,255,255,.5); margin:8px auto 0; max-width:680px}
+
+/* ===== Fundo suavemente animado (só transform/opacity: leve) ===== */
+.sky::before{content:""; position:absolute; inset:-15%; pointer-events:none; opacity:.5; will-change:transform;
+  background:radial-gradient(40% 30% at 20% 30%,rgba(255,63,180,.16),transparent 70%),
+             radial-gradient(35% 28% at 80% 22%,rgba(120,90,255,.18),transparent 70%);
+  animation:aurora 40s ease-in-out infinite alternate}
+@keyframes aurora{from{transform:translate3d(-3%,0,0)}to{transform:translate3d(3%,-2%,0)}}
+/* a grade "anda": as linhas horizontais ficam numa camada que só desliza */
+.grid{background:repeating-linear-gradient(90deg,transparent 0 58px,var(--pink) 58px 60px),var(--deep); overflow:hidden}
+.grid::after{content:""; position:absolute; left:0; right:0; top:-28px; bottom:0; will-change:transform;
+  background:repeating-linear-gradient(0deg,transparent 0 26px,var(--pink) 26px 28px);
+  animation:gridDrive 3s linear infinite}
+.grid::before{z-index:1}
+@keyframes gridDrive{from{transform:translate3d(0,0,0)}to{transform:translate3d(0,28px,0)}}
+
+/* ===== Animações de rolagem ===== */
+/* barra de progresso da leitura no topo */
+.progress{position:fixed; left:0; right:0; top:0; height:4px; z-index:40; transform-origin:0 50%; transform:scaleX(0);
+  background:linear-gradient(90deg,var(--pink),var(--gold),var(--gold-soft)); box-shadow:0 0 12px rgba(245,197,66,.6)}
+
+/* cabeçalho encolhe ao rolar */
+.top-in{transition:padding .3s ease}
+.top.scrolled .top-in{padding-top:6px; padding-bottom:6px}
+.top .brand img{transition:width .3s ease, height .3s ease}
+.top.scrolled .brand img{width:32px; height:32px}
+
+/* elementos que aparecem ao entrar na tela (só com JS ligado) */
+.js .reveal{opacity:0; transform:translateY(40px) scale(.97);
+  transition:opacity .7s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1);
+  transition-delay:var(--d,0s)}
+.js .reveal.from-left{transform:translateX(-70px) rotate(-3deg)}
+.js .reveal.from-right{transform:translateX(70px) rotate(3deg)}
+.js .reveal.zoom{transform:scale(.82)}
+.js .reveal.in{opacity:1; transform:none}
+.feature:nth-child(4n+2){--d:.08s} .feature:nth-child(4n+3){--d:.16s} .feature:nth-child(4n){--d:.24s}
+
+/* brilho que passa no título das seções */
+.sec-title{background:linear-gradient(100deg,var(--gold) 0%,var(--gold) 40%,#fff6cf 50%,var(--gold) 60%,var(--gold) 100%);
+  background-size:250% 100%; background-position:100% 0; -webkit-background-clip:text; background-clip:text; color:transparent}
+.js .sec-title.in{animation:shine 1.6s ease .2s both}
+@keyframes shine{from{background-position:100% 0}to{background-position:0 0}}
+
+/* efeitos ligados diretamente à rolagem (navegadores que suportam) */
+@supports (animation-timeline: scroll()){
+  .progress{animation:grow linear both; animation-timeline:scroll(root)}
+  @keyframes grow{to{transform:scaleX(1)}}
+
+  /* abertura: o título e o apresentador se afastam enquanto a página sobe */
+  .hero .title{animation:heroTitle linear both; animation-timeline:scroll(root); animation-range:0 70vh}
+  .hero .host{animation:heroHost linear both; animation-timeline:scroll(root); animation-range:0 70vh}
+  @keyframes heroTitle{to{transform:translateY(-60px) scale(.82); opacity:.15}}
+  @keyframes heroHost{to{transform:translateY(-30px) scale(.7) rotate(-14deg); opacity:.2}}
+
+  /* o sol nasce e a grade acelera conforme rola */
+  .sun{animation:sunRise linear both; animation-timeline:scroll(root)}
+  @keyframes sunRise{from{transform:translateX(-50%) translateY(18vh) scale(.85); opacity:.35}
+                     to{transform:translateX(-50%) translateY(-6vh) scale(1.15); opacity:.85}}
+  .stars{animation:starsUp linear both; animation-timeline:scroll(root)}
+  @keyframes starsUp{to{transform:translateY(-12vh)}}
+
+  /* prints das versões se inclinam ao entrar */
+  .version .devices{animation:tiltIn linear both; animation-timeline:view(); animation-range:entry 0% cover 45%}
+  @keyframes tiltIn{from{transform:perspective(900px) rotateX(24deg) scale(.9)}to{transform:none}}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .js .reveal{opacity:1; transform:none; filter:none; transition:none}
+  .hero .title,.hero .host,.sun,.grid::after,.stars,.sky::before,.version .devices,.progress,.js .sec-title.in{animation:none}
+  .slide{transition:none}
+  .sec-title{color:var(--gold); background:none}
+}
+
+@media (max-width:420px){
+  .hero .host{width:118px; height:118px}
+  .btn{width:100%}
+  .version{padding:20px 16px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.star,.spark{animation:none}}
+
+/* ===== Efeitos de passar o mouse e de clique em todos os botões e links ===== */
+a,button{-webkit-tap-highlight-color:transparent}
+.btn{transition:transform .18s cubic-bezier(.2,.7,.2,1), box-shadow .18s ease, filter .18s ease}
+.btn:hover{transform:translateY(-3px); filter:brightness(1.08); box-shadow:0 9px 0 #9a6c10,0 16px 30px rgba(0,0,0,.4)}
+.btn.alt:hover{box-shadow:0 9px 0 #6a1a5a,0 16px 30px rgba(0,0,0,.4),0 0 22px rgba(255,63,180,.35)}
+.btn:active,.btn.alt:active{transform:translateY(4px); filter:brightness(.96); box-shadow:0 2px 0 #9a6c10,0 6px 14px rgba(0,0,0,.35)}
+.btn.alt:active{box-shadow:0 2px 0 #6a1a5a,0 6px 14px rgba(0,0,0,.35)}
+.badge{display:inline-block; border-radius:10px; transition:transform .18s cubic-bezier(.2,.7,.2,1), box-shadow .18s ease}
+.badge:hover{transform:translateY(-3px) scale(1.04); box-shadow:0 10px 24px rgba(0,0,0,.45),0 0 0 3px rgba(245,197,66,.45)}
+.version.android .badge:hover{box-shadow:0 10px 24px rgba(0,0,0,.45),0 0 0 3px rgba(255,63,180,.5)}
+.badge:active{transform:scale(.96)}
+.menu a{transition:background .18s ease, color .18s ease, transform .12s ease}
+.menu a:active{transform:scale(.94)}
+.brand{transition:transform .15s ease} .brand:hover{color:var(--gold-soft)} .brand:active{transform:scale(.96)}
+.brand img{transition:transform .25s ease} .brand:hover img{transform:rotate(-8deg) scale(1.06)}
+.burger{transition:background .15s ease, transform .12s ease} .burger:hover{background:rgba(245,197,66,.14)} .burger:active{transform:scale(.92)}
+.video button .play{transition:transform .2s cubic-bezier(.2,.7,.2,1), box-shadow .2s ease}
+.video button:hover .play{transform:scale(1.12); box-shadow:0 0 0 12px rgba(245,197,66,.3),0 12px 34px rgba(0,0,0,.55)}
+.video button:active .play{transform:scale(.95)}
+.video button img{transition:transform .5s ease} .video button:hover img{transform:scale(1.03)}
+.to-top{transition:transform .18s ease, box-shadow .18s ease} .to-top:hover{transform:translateY(-4px); box-shadow:0 12px 26px rgba(0,0,0,.45)} .to-top:active{transform:scale(.92)}
+/* links de texto: sublinhado que cresce */
+footer nav a,.toc a{background:linear-gradient(currentColor,currentColor) 0 100%/0 2px no-repeat; transition:background-size .25s ease, color .2s ease; text-decoration:none; padding-bottom:2px}
+footer nav a:hover,.toc a:hover{background-size:100% 2px}
+footer nav a:active,.toc a:active,.doc a:active{opacity:.7}
+.doc a{transition:color .15s ease} .doc a:hover{color:#2a1460}
+.feature{transition:transform .25s cubic-bezier(.2,.7,.2,1), box-shadow .25s ease}
+@media (hover:hover){ .js .feature.in:hover{transform:translateY(-6px); box-shadow:0 20px 44px rgba(0,0,0,.5),0 0 0 2px rgba(245,197,66,.35)} }
+@media (prefers-reduced-motion:reduce){ .btn,.badge,.feature,.to-top,.video button img,.brand img{transition:none} }
+/* depois de aparecer, o cartão responde rápido ao mouse (sem o atraso da entrada) */
+.js .feature.reveal.in{transition:opacity .7s ease, transform .25s cubic-bezier(.2,.7,.2,1), box-shadow .25s ease; transition-delay:0s}
+/* o play fica abaixo do texto da capa, sem cobrir o título */
+.video .play{top:82%}
+@media (max-width:520px){ .video .play{width:60px; height:60px; margin:-30px 0 0 -30px} .video .play svg{width:26px; height:26px} }
