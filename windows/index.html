@@ -9,6 +9,19 @@
 <meta name="theme-color" content="#0b1446">
 <link rel="icon" type="image/png" sizes="64x64" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
+<!-- Google Ads: tag do Google (conversão "Abriu a Microsoft Store") -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-587587580"></script>
+<script>
+  window.dataLayer=window.dataLayer||[];
+  function gtag(){dataLayer.push(arguments);}
+  // aviso de cookies: se a pessoa recusou antes, o Google Ads funciona sem cookies
+  var cookiesRecusados=false;
+  try{ cookiesRecusados=localStorage.getItem('cookies-ads')==='nao'; }catch(e){}
+  var ads=cookiesRecusados?'denied':'granted';
+  gtag('consent','default',{ad_storage:ads, ad_user_data:ads, ad_personalization:ads, analytics_storage:'denied'});
+  gtag('js',new Date());
+  gtag('config','AW-587587580');
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
@@ -156,6 +169,23 @@ h1{font-size:clamp(1.12rem,4.6vw,1.45rem)}
   .cards .panel{width:min(440px,48%); min-width:290px}
 }
 @media (min-height:820px) and (min-width:400px){.host{width:150px;height:150px}}
+/* aviso de cookies */
+.cookies{
+  position:fixed; left:12px; right:12px; bottom:max(12px,env(safe-area-inset-bottom)); z-index:10;
+  max-width:560px; margin:0 auto; padding:12px 14px;
+  display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+  font-size:.85rem; color:#e7e9ff; text-align:left;
+  background:rgba(7,13,51,.97); border:2px solid var(--gold); border-radius:14px;
+  box-shadow:0 10px 30px rgba(0,0,0,.5);
+}
+.cookies p{margin:0; flex:1 1 240px}
+.cookies .acoes{display:flex; gap:8px; flex:none}
+.cookies button{
+  font:inherit; font-weight:700; cursor:pointer; border-radius:999px; padding:7px 16px; min-height:36px;
+  border:2px solid var(--gold); background:var(--gold); color:#14123a;
+}
+.cookies button.sec{background:transparent; color:var(--gold-soft)}
+.cookies button:focus-visible{outline:3px solid #fff; outline-offset:2px}
 @media (prefers-reduced-motion:reduce){.star,.spark{animation:none}.bar i{transition:none}}
 </style>
 </head>
@@ -216,6 +246,14 @@ h1{font-size:clamp(1.12rem,4.6vw,1.45rem)}
   <footer>TH Maestro Apps</footer>
 </main>
 
+<div class="cookies hide" id="cookies" role="region" aria-label="Aviso de cookies">
+  <p>Usamos cookies do Google Ads só para saber quantas pessoas chegam pelos anúncios. Nenhum dado pessoal é coletado por nós.</p>
+  <div class="acoes">
+    <button type="button" class="sec" id="cookiesNao">Recusar</button>
+    <button type="button" id="cookiesOk">OK</button>
+  </div>
+</div>
+
 <!-- Contador de visitas (GoatCounter, sem cookies). Conta a página separada por cid. -->
 <script>
   (function(){
@@ -258,12 +296,35 @@ h1{font-size:clamp(1.12rem,4.6vw,1.45rem)}
   document.getElementById('storeApp').href=appUrl;
   document.getElementById('storeWeb').href=webUrl;
 
+  // aviso de cookies: aparece até a pessoa escolher; a escolha fica guardada neste navegador
+  var aviso=document.getElementById('cookies'), escolha=null;
+  try{ escolha=localStorage.getItem('cookies-ads'); }catch(e){}
+  if(!escolha) aviso.classList.remove('hide');
+  function escolher(v){
+    try{ localStorage.setItem('cookies-ads',v); }catch(e){}
+    var s=v==='sim'?'granted':'denied';
+    try{ gtag('consent','update',{ad_storage:s, ad_user_data:s, ad_personalization:s}); }catch(e){}
+    aviso.classList.add('hide');
+  }
+  document.getElementById('cookiesOk').addEventListener('click',function(){ escolher('sim'); });
+  document.getElementById('cookiesNao').addEventListener('click',function(){ escolher('nao'); });
+
+  // Google Ads: conta a conversão "Abriu a Microsoft Store" uma vez por visita
+  var convOk=false;
+  function conversaoAds(){
+    if(convOk) return; convOk=true;
+    try{ gtag('event','conversion',{'send_to':'AW-587587580/LPC4CMntg7cdEPy_l5gC'}); }catch(e){}
+  }
+  document.getElementById('storeApp').addEventListener('click',conversaoAds);
+  document.getElementById('storeWeb').addEventListener('click',conversaoAds);
+
   if(isWindows){
     document.getElementById('win').classList.remove('hide');
     var bar=document.getElementById('bar'), fill=bar.querySelector('i'), foi=false;
     function abrir(){
       if(foi) return; foi=true;
       try{ if(window.goatcounter&&window.goatcounter.count) window.goatcounter.count({path:'store-aberta-auto-'+cid, title:'Abriu a Store automaticamente', event:true}); }catch(e){}
+      conversaoAds();
       location.href=appUrl;
       setTimeout(function(){
         document.getElementById('winTitle').textContent='Pronto pra instalar!';
@@ -277,6 +338,12 @@ h1{font-size:clamp(1.12rem,4.6vw,1.45rem)}
   }else{
     document.getElementById('other').classList.remove('hide');
     document.getElementById('linkTxt').textContent=location.host+location.pathname;
+    // no Android, a versão de celular vem primeiro (é o que a pessoa pode instalar agora)
+    if(isAndroid){
+      var promo=document.querySelector('.promo'), other=document.getElementById('other');
+      other.parentNode.insertBefore(promo,other);
+      document.getElementById('promoTitle').textContent='Jogue agora no seu celular!';
+    }
     // conta quem chegou fora do Windows (celular, tablet, Mac…), separado por cid
     (function evento(t){
       if(window.goatcounter&&window.goatcounter.count){
