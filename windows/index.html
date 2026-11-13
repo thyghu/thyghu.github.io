@@ -146,6 +146,10 @@ h1{margin:0 0 4px; font-weight:900; font-size:1.35rem; color:var(--gold); letter
 }
 .phone img{display:block; width:100%; height:auto; border-radius:10px}
 .phone::after{content:""; position:absolute; left:50%; bottom:3px; width:18px; height:3px; margin-left:-9px; border-radius:2px; background:rgba(245,197,66,.7)}
+.qrwrap{margin-top:14px; text-align:center}
+.qrbox{width:150px; margin:0 auto 6px; border:3px solid var(--gold); border-radius:12px; overflow:hidden; background:#fff; box-shadow:0 0 0 5px rgba(245,197,66,.15),0 8px 22px rgba(0,0,0,.4)}
+.qrbox svg{display:block; width:100%; height:auto}
+.qrwrap p{margin:0; font-size:.85rem; color:var(--muted)}
 .promo .badge{margin-top:12px}
 .promo .badge img{width:200px}
 footer{margin-top:18px; font-size:.75rem; color:rgba(255,255,255,.55)}
@@ -163,6 +167,17 @@ h1{font-size:clamp(1.12rem,4.6vw,1.45rem)}
   .phone{width:104px; margin-bottom:6px}
   .promo .badge img{width:220px}
   .title{width:min(46vw,560px)}
+  /* conteúdo centralizado na altura, pra sobra não ficar toda embaixo */
+  .cards .panel{display:flex; flex-direction:column; justify-content:center}
+  /* com QR: texto em cima, print e QR lado a lado, selo embaixo (card mais baixo) */
+  .cards .promo.tem-qr{display:grid; grid-template-columns:auto auto; justify-content:center; align-content:center; align-items:center; column-gap:20px;
+    grid-template-areas:"txt txt" "phone qr" "badge badge"}
+  .promo.tem-qr .promo-row{display:contents}
+  .promo.tem-qr .promo-txt{grid-area:txt; text-align:center; margin-bottom:14px}
+  .promo.tem-qr .phone{grid-area:phone; width:88px; margin:0}
+  .promo.tem-qr .qrwrap{grid-area:qr; margin:0; width:136px}
+  .promo.tem-qr .qrbox{width:136px}
+  .promo.tem-qr .badge{grid-area:badge; justify-self:center; margin-top:14px}
 }
 /* celular pequeno */
 @media (max-width:360px){
@@ -249,6 +264,11 @@ h1{font-size:clamp(1.12rem,4.6vw,1.45rem)}
         <p>Jogue o Show do Galardão no <b>Android</b>, <b>grátis</b>. Mais de 270 perguntas bíblicas, sem precisar de internet.</p>
       </div>
     </div>
+    <!-- QR code: aparece em qualquer aparelho, pra instalar no celular escaneando com a câmera -->
+    <div class="qrwrap hide" id="qrWrap">
+      <div class="qrbox" id="qrBox" role="img" aria-label="QR code que abre o Show do Galardão no Google Play"></div>
+      <p>Aponte a câmera do celular Android para instalar</p>
+    </div>
     <a class="badge" id="playBtn" href="https://play.google.com/store/apps/details?id=site.galardao" data-goatcounter-click="clique-google-play" data-goatcounter-title="Clicou no Google Play"><img src="selo_google_play_ptbr.png" alt="Disponível no Google Play" width="646" height="250"></a>
   </section>
   </div>
@@ -280,6 +300,7 @@ h1{font-size:clamp(1.12rem,4.6vw,1.45rem)}
 </script>
 <script data-goatcounter="https://thyghu.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 
+<script src="../js/qr.js"></script>
 <script>
 (function(){
   // estrelas
@@ -307,7 +328,7 @@ h1{font-size:clamp(1.12rem,4.6vw,1.45rem)}
   var webUrl='https://apps.microsoft.com/detail/'+ID+'?cid='+encodeURIComponent(cid);
   var ua=navigator.userAgent||'';
   var isAndroid=/Android/i.test(ua);
-  var isMobile=isAndroid||/iPhone|iPad|iPod|Mobile/i.test(ua);
+  var isMobile=isAndroid||/iPhone|iPad|iPod|Mobile/i.test(ua)||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1); // iPad novo se apresenta como Mac
   var isWindows=/Windows NT/i.test(ua)&&!isMobile;
 
   document.getElementById('storeApp').href=appUrl;
@@ -371,6 +392,15 @@ h1{font-size:clamp(1.12rem,4.6vw,1.45rem)}
   var p=document.getElementById('playBtn');
   p.setAttribute('data-goatcounter-click','clique-google-play-'+cid); // clique na Play separado por cid
   p.href+='&referrer='+encodeURIComponent('utm_source='+cid+'&utm_medium=windows_page');
+
+  // QR code do Google Play junto da propaganda do Android, em qualquer aparelho
+  // (no celular/tablet, outra pessoa pode escanear direto da tela)
+  if(window.QR){
+    var qrUrl='https://play.google.com/store/apps/details?id=site.galardao&referrer='+encodeURIComponent('utm_source='+cid+'&utm_medium=windows_qr');
+    document.getElementById('qrBox').innerHTML=QR.svg(qrUrl);
+    document.getElementById('qrWrap').classList.remove('hide');
+    document.querySelector('.promo').classList.add('tem-qr');
+  }
 })();
 </script>
 </body>
