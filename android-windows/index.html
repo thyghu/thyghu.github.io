@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Show do Galardão — baixar</title>
+<meta name="description" content="Show do Galardão, o quiz bíblico, para Android e Windows.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0b1446">
+<link rel="icon" type="image/png" sizes="64x64" href="../android/favicon.png">
+<link rel="apple-touch-icon" href="../android/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--navy-0:#070d33;--navy-1:#0b1446;--navy-2:#0e1e5b;--purple:#3b1f6e;--deep:#1a0a3a;--gold:#f5c542;--gold-2:#d9a020;--gold-soft:#ffe08a;--muted:#c9cdf0}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;color:#fff;font:16px/1.5 "Roboto",system-ui,-apple-system,"Segoe UI",sans-serif;
+  background:linear-gradient(180deg,var(--navy-0) 0%,var(--navy-1) 35%,#151e66 58%,var(--purple) 76%,var(--deep) 100%) fixed}
+main{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 16px;text-align:center}
+.title{width:min(88vw,460px);height:auto;display:block;margin:0 auto 14px;filter:drop-shadow(0 6px 18px rgba(245,197,66,.25))}
+.panel{width:min(100%,440px);padding:22px 20px 20px;background:linear-gradient(180deg,rgba(14,30,91,.92),rgba(7,13,51,.95));border:3px solid var(--gold);border-radius:22px;box-shadow:0 14px 40px rgba(0,0,0,.45)}
+h1{margin:0 0 4px;font-weight:900;font-size:clamp(1.12rem,4.6vw,1.45rem);color:var(--gold)}
+.lead{margin:0 0 10px;color:var(--muted)}
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:56px;padding:12px 18px;margin:12px 0 0;border-radius:999px;text-decoration:none;font-weight:900;font-size:clamp(.92rem,3.8vw,1.1rem);letter-spacing:.4px;color:#14123a;background:linear-gradient(180deg,#f7d35a 0%,var(--gold) 45%,var(--gold-2) 100%);border:3px solid #f6e7b0;box-shadow:0 6px 0 #9a6c10,0 10px 24px rgba(0,0,0,.35)}
+.btn:active{transform:translateY(4px);box-shadow:0 2px 0 #9a6c10,0 6px 14px rgba(0,0,0,.35)}
+.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.btn svg{width:22px;height:22px;flex:none}
+.hide{display:none!important}
+.qrwrap{margin:14px 0 4px}
+.qrbox{width:170px; margin:0 auto 6px; border:3px solid var(--gold); border-radius:12px; overflow:hidden; background:#fff; box-shadow:0 0 0 5px rgba(245,197,66,.15),0 8px 22px rgba(0,0,0,.4)}
+.qrbox svg{display:block; width:100%; height:auto}
+.qrwrap p{margin:0; font-size:.85rem; color:var(--muted)}
+</style>
+</head>
+<body>
+<main>
+  <img class="title" src="../android/titulo.png" alt="Show do Galardão" width="900" height="239">
+
+  <!-- Fica visível só enquanto detecta o aparelho, ou se não for Android nem Windows (iPhone, Mac, Linux…) ou sem JavaScript -->
+  <section class="panel" id="escolha" aria-live="polite">
+    <h1 id="titulo">Escolha a sua versão</h1>
+    <p class="lead" id="lead">O Show do Galardão está no Android e no Windows 10 e 11.</p>
+    <a class="btn" id="irAndroid" href="../android/">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#3ddc84" d="M17.6 9.48l1.84-3.18a.38.38 0 0 0-.66-.38l-1.86 3.22A11.4 11.4 0 0 0 12 8.08c-1.77 0-3.43.39-4.92 1.06L5.22 5.92a.38.38 0 0 0-.66.38L6.4 9.48A10.8 10.8 0 0 0 1 18h22a10.8 10.8 0 0 0-5.4-8.52zM7 15.25a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5zm10 0a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5z"/></svg>
+      Para Android
+    </a>
+    <!-- QR code do Google Play: aparece pra quem não é Android nem Windows (iPhone, iPad, Mac, Linux…) -->
+    <div class="qrwrap hide" id="qrWrap">
+      <div class="qrbox" id="qrBox" role="img" aria-label="QR code que abre o Show do Galardão no Google Play"></div>
+      <p>Ou aponte a câmera do celular Android para instalar</p>
+    </div>
+    <a class="btn" id="irWindows" href="../windows/">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="9.5" height="9.5" fill="#f25022"/><rect x="12.5" y="2" width="9.5" height="9.5" fill="#7fba00"/><rect x="2" y="12.5" width="9.5" height="9.5" fill="#00a4ef"/><rect x="12.5" y="12.5" width="9.5" height="9.5" fill="#ffb900"/></svg>
+      Para Windows
+    </a>
+  </section>
+</main>
+
+<script>
+// Contador de visitas (GoatCounter, sem cookies), separado por cid
+(function(){
+  var c=(new URLSearchParams(location.search).get('cid')||'site').replace(/[^\w-]/g,'').slice(0,40)||'site';
+  window.goatcounter={path:'/android-windows?cid='+c};
+})();
+</script>
+<script data-goatcounter="https://thyghu.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+<script src="../js/qr.js"></script>
+<script>
+(function(){
+  var ua=navigator.userAgent||'';
+  var ehAndroid=/Android/i.test(ua);
+  var ehMovel=ehAndroid||/iPhone|iPad|iPod|Mobile/i.test(ua)||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1);
+  var ehWindows=/Windows NT/i.test(ua)&&!ehMovel;
+  var q=location.search; // mantém o cid (e o resto) da campanha
+  var cid=(new URLSearchParams(q).get('cid')||'site').replace(/[^\w-]/g,'').slice(0,40)||'site';
+
+  // os botões já levam o cid adiante; cada clique conta no GoatCounter separado por cid
+  var irA=document.getElementById('irAndroid'), irW=document.getElementById('irWindows');
+  irA.href='../android/'+q; irW.href='../windows/'+q;
+  irA.setAttribute('data-goatcounter-click','aw-clique-android-'+cid);
+  irA.setAttribute('data-goatcounter-title','Aviso: clicou em Para Android');
+  irW.setAttribute('data-goatcounter-click','aw-clique-windows-'+cid);
+  irW.setAttribute('data-goatcounter-title','Aviso: clicou em Para Windows');
+
+  var destino=ehAndroid?'../android/':(ehWindows?'../windows/':null);
+  if(destino){
+    // esconde os botões na hora e troca de página sem deixar esta no histórico (o "voltar" não prende a pessoa aqui)
+    document.getElementById('escolha').classList.add('hide');
+    location.replace(destino+q);
+    // reserva: se o redirecionamento falhar, volta a mostrar os botões
+    setTimeout(function(){ document.getElementById('escolha').classList.remove('hide'); },4000);
+  }else{
+    // nem Android nem Windows (iPhone, iPad, Mac, Linux…): avisa e oferece as duas versões
+    document.getElementById('titulo').textContent='Disponível só para Android e Windows';
+    document.getElementById('lead').innerHTML='O Show do Galardão ainda não tem versão para este aparelho. Jogue no <b>celular Android</b> ou no <b>computador com Windows 10 e 11</b>.';
+    (function evento(t){ // conta quem viu o aviso (nem Android nem Windows); o count.js carrega assíncrono
+      if(window.goatcounter&&window.goatcounter.count){
+        try{ window.goatcounter.count({path:'aw-outro-aparelho-'+cid, title:'Viu o aviso: nem Android nem Windows', event:true}); }catch(e){}
+      }else if(t<40){ setTimeout(function(){ evento(t+1); },250); }
+    })(0);
+    if(window.QR){ // em qualquer aparelho: no celular/tablet, outra pessoa pode escanear da tela
+      var qrUrl='https://play.google.com/store/apps/details?id=site.galardao&referrer='+encodeURIComponent('utm_source='+cid+'&utm_medium=android_windows_qr');
+      document.getElementById('qrBox').innerHTML=QR.svg(qrUrl);
+      document.getElementById('qrWrap').classList.remove('hide');
+    }
+  }
+})();
+</script>
+</body>
+</html>
