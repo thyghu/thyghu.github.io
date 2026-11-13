@@ -92,6 +92,28 @@
   window.addEventListener('load',aoRolar);
   aoRolar();
 
+  // botões de download: quem já está no aparelho certo vai direto pra loja
+  // (Windows -> app da Microsoft Store; Android -> Google Play). No resto, abre a página /android ou /windows.
+  var ua=navigator.userAgent||'';
+  var ehAndroid=/Android/i.test(ua);
+  var ehMovel=ehAndroid||/iPhone|iPad|iPod|Mobile/i.test(ua)||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1);
+  var ehWindows=/Windows NT/i.test(ua)&&!ehMovel;
+  var cid=(new URLSearchParams(location.search).get('cid')||'site').replace(/[^\w-]/g,'').slice(0,40)||'site';
+  [].forEach.call(document.querySelectorAll('a[href^="windows/"], a[href^="android/"]'),function(a){
+    var win=a.getAttribute('href').indexOf('windows/')===0;
+    if(win&&ehWindows){
+      a.href='ms-windows-store://pdp/?productid=9P8R4P1W55QB&cid='+encodeURIComponent(cid);
+      a.setAttribute('data-goatcounter-click','clique-direto-store-'+cid);
+      a.setAttribute('data-goatcounter-title','Home: abriu a Microsoft Store direto');
+    }else if(!win&&ehAndroid){
+      a.href='https://play.google.com/store/apps/details?id=site.galardao&referrer='+encodeURIComponent('utm_source='+cid+'&utm_medium=home');
+      a.setAttribute('data-goatcounter-click','clique-direto-play-'+cid);
+      a.setAttribute('data-goatcounter-title','Home: abriu o Google Play direto');
+    }else{
+      a.href=(win?'windows/':'android/')+'?cid='+encodeURIComponent(cid); // repassa a origem (cid) da campanha
+    }
+  });
+
   // ano no rodapé
   var ano=document.getElementById('ano');
   if(ano) ano.textContent=new Date().getFullYear();
