@@ -173,7 +173,14 @@
   <p class="legal">Google Play e o logotipo do Google Play são marcas registradas da Google LLC. Microsoft Store e o logotipo da Microsoft são marcas registradas do grupo de empresas Microsoft.</p>
 </footer>
 
-<!-- Contador de visitas (GoatCounter, sem cookies) -->
+<!-- Contador de visitas (GoatCounter, sem cookies). Com ?cid= na URL, conta a visita separada por campanha
+     (sem isso o GoatCounter usaria o endereço canônico "/" e perderia o cid) -->
+<script>
+  (function(){
+    var c=(new URLSearchParams(location.search).get('cid')||'').replace(/[^\w-]/g,'').slice(0,40);
+    if(c) window.goatcounter={path:'/?cid='+c};
+  })();
+</script>
 <script data-goatcounter="https://thyghu.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 <script src="js/site.js"></script>
 </body>
